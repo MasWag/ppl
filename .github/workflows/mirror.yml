@@ -1,0 +1,25 @@
+name: mirror
+
+on:
+  push:
+    branches: mirror
+  schedule:
+    - cron: '0 0 * * *'
+
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Clone ppl
+      run: git clone git://git.cs.unipr.it/ppl/ppl.git
+    - name: Set remote
+      run : cd ppl && git remote add github https://github.com/MasWag/ppl.git
+    - name: Push to remote
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: master
+        directory: ppl
